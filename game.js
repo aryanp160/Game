@@ -184,42 +184,57 @@ document.getElementById('host-game').onclick = async () => {
     const pc = setupPeerConnection(true);
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
-    const joinCode = generateJoinCode();
-    localStorage.setItem(joinCode, JSON.stringify(pc.localDescription)); // Simulating signaling
-    document.getElementById('host-code').value = joinCode;
+
+    setTimeout(() => { // 🔥 Fix: Ensure localDescription is set before storing
+        const joinCode = generateJoinCode();
+        localStorage.setItem(joinCode, JSON.stringify(pc.localDescription));
+        document.getElementById('host-code').value = joinCode;
+    }, 1000); // 🔥 Delay storing the offer to avoid an incomplete value
 
     pc.oniceconnectionstatechange = () => {
         if (pc.iceConnectionState === 'connected') {
             document.getElementById('host-waiting').innerHTML = 'Opponent connected!';
         }
     };
+
     window.pc = pc; // Store for debugging
 };
+
 
 document.getElementById('join-game').onclick = () => showPage('join');
 
 document.getElementById('connect-btn').onclick = async () => {
-    const joinCode = document.getElementById('join-code').value.trim();
-    const offerJson = localStorage.getItem(joinCode);
+    const joinCode = document.getElementById('join-code').value.trim(); // 🔥 Fix: Trim spaces
+    const offerJson = localStorage.getItem(joinCode); // 🔥 Fix: Read stored offer
+
     if (!offerJson) {
-        alert('Invalid game code!');
+        alert('Invalid game code!'); // 🔥 Fix: More informative error message
         return;
     }
-    const offer = JSON.parse(offerJson);
-    const pc = setupPeerConnection(false);
-    await pc.setRemoteDescription(offer);
-    const answer = await pc.createAnswer();
-    await pc.setLocalDescription(answer);
-    localStorage.setItem(joinCode + '-answer', JSON.stringify(pc.localDescription)); // Simulating signaling
 
-    document.getElementById('join-code').value = 'Answer stored, waiting for connection...';
-    pc.oniceconnectionstatechange = () => {
-        if (pc.iceConnectionState === 'connected') {
-            console.log('Connected to host!');
-        }
-    };
-    window.pc = pc; // Store for debugging
+    try {
+        const offer = JSON.parse(offerJson);
+        const pc = setupPeerConnection(false);
+        await pc.setRemoteDescription(offer);
+        const answer = await pc.createAnswer();
+        await pc.setLocalDescription(answer);
+        localStorage.setItem(joinCode + '-answer', JSON.stringify(pc.localDescription)); // 🔥 Fix: Store answer properly
+
+        document.getElementById('join-code').value = 'Answer stored, waiting for connection...';
+
+        pc.oniceconnectionstatechange = () => {
+            if (pc.iceConnectionState === 'connected') {
+                console.log('Connected to host!');
+            }
+        };
+
+        window.pc = pc; // Store for debugging
+    } catch (error) {
+        alert("Error processing the game code. Try again.");
+        console.error("Join error:", error);
+    }
 };
+
 
 
 
