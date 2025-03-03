@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D 1v1 Shooter</title>
-    <link rel="stylesheet" href="styles.css">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>3D 1v1 Shooter</title>
+ <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="landing-page" class="page active">
-        <h1>3D 1v1 Shooter</h1>
-        <button id="host-game">Host Game</button>
-        <button id="join-game">Join Game</button>
-    </div>
+ <div id="landing-page" class="page active">
+ <h1>3D 1v1 Shooter</h1>
+ <button id="host-game">Host Game</button>
+ <button id="join-game">Join Game</button>
+ </div>
 
-    <div id="host-page" class="page">
-        <h2>Host Game</h2>
-        <p>Your Game Code:</p>
-        <input id="host-code" readonly title="Game Code">
-        <p>Share this code with your friend!</p>
-        <div id="host-waiting">Waiting for opponent...</div>
-    </div>
+ <div id="host-page" class="page">
+ <h2>Host Game</h2>
+ <p>Your Game Code:</p>
+ <input id="host-code" readonly>
+ <p>Share this code with your friend!</p>
+ <div id="host-waiting">Waiting for opponent...</div>
+ </div>
 
-    <div id="join-page" class="page">
-        <h2>Join Game</h2>
-        <input id="join-code" placeholder="Enter game code">
-        <button id="connect-btn">Connect</button>
-    </div>
+ <div id="join-page" class="page">
+ <h2>Join Game</h2>
+ <input id="join-code" placeholder="Enter game code">
+ <button id="connect-btn">Connect</button>
+ </div>
 
-    <div id="countdown-page" class="page">
-        <h2>Game Starting in...</h2>
-        <div id="countdown">5</div>
-    </div>
+ <div id="countdown-page" class="page">
+ <h2>Game Starting in...</h2>
+ <div id="countdown">5</div>
+ </div>
 
-    <div id="game-container"></div>
-    <div id="health-display"></div>
+ <div id="game-container"></div>
+ <div id="health-display"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="game.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+ <script src="game.js"></script>
 </body>
 </html>
